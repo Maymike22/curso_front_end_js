@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carrito de Compras - Dra Gomez Lorena</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/app.css" />
+    <style>
+        .seccion-carrito {
+            padding-top: 140px;
+            padding-bottom: 80px;
+        }
+
+        .img-producto {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .img-producto {
+                height: 200px;
+                border-bottom-left-radius: 0;
+                border-top-right-radius: 15px;
+            }
+        }
+
+        .tarjeta-producto {
+            border: none;
+            border-radius: 15px;
+            background: var(--fondo-premium);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .tarjeta-producto:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-azul {
+            background-color: var(--azul-principal);
+            color: white;
+            border: none;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .btn-azul:hover {
+            background-color: #154575;
+            color: var(--dorado-acento);
+        }
+
+        .btn-dorado {
+            background-color: var(--dorado-acento);
+            color: #1e5a96;
+            font-weight: 700;
+            border: none;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-dorado:hover {
+            background-color: #e6c200;
+            transform: scale(1.02);
+        }
+
+        .lista-carrito-elemento {
+            border-bottom: 1px dashed #ddd;
+            padding: 10px 0;
+        }
+
+        .lista-carrito-elemento:last-child {
+            border-bottom: none;
+        }
+
+        .panel-carrito-fijo {
+            position: sticky;
+            top: 120px;
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column h-100">
+    <header>
+        <nav class="navbar navbar-expand-lg px-3 fixed-top shadow-sm">
+            <div class="container-fluid px-0">
+                <a class="navbar-brand ps-0" href="index.html">
+                    <img src="iconos/GomezIconDorado.png" alt="Logo" style="height: 100px;" />
+                </a>
+                <button class="navbar-toggler border-warning" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="servicios.html">Servicios</a></li>
+                        <li class="nav-item"><a class="nav-link" href="consultorios.html">Consultorios</a></li>
+                        <li class="nav-item"><a class="nav-link" href="redes.html">Redes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="carrito.html">Carrito</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-shrink-0">
+        <section class="seccion-carrito container">
+            <div class="row">
+                <div class="col-12 mb-4 text-center">
+                    <h1 class="display-5 fw-bold" style="color: var(--azul-principal);">Servicios y Prácticas
+                        Nefrológicas</h1>
+                    <p class="lead text-muted">Selecciona las consultas o estudios especializados requeridos.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- aca van los servicios médicos que mostramos -->
+                <div class="col-lg-8">
+                    <!-- formulario para que el paciente cargue sus datos -->
+                    <div class="card tarjeta-premium p-4 mb-4 shadow-sm">
+                        <h3 class="fw-bold mb-3" style="color: var(--azul-principal);">
+                            <i class="bi bi-person-fill me-2"></i>Datos del paciente
+                        </h3>
+                        <form id="formulario-comprador" class="row g-3">
+                            <div class="col-md-6">
+                                <label for="comprador-nombre" class="form-label fw-semibold text-muted">Nombre</label>
+                                <input type="text" class="form-control" id="comprador-nombre" required
+                                    placeholder="Ej: Juan">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="comprador-apellido"
+                                    class="form-label fw-semibold text-muted">Apellido</label>
+                                <input type="text" class="form-control" id="comprador-apellido" required
+                                    placeholder="Ej: Pérez">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="comprador-dni" class="form-label fw-semibold text-muted">DNI</label>
+                                <input type="text" class="form-control" id="comprador-dni" required
+                                    placeholder="Ej: 12345678" pattern="[0-9]{7,8}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="comprador-telefono"
+                                    class="form-label fw-semibold text-muted">Teléfono</label>
+                                <input type="tel" class="form-control" id="comprador-telefono" required
+                                    placeholder="Ej: 1123456789">
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="contenedor-productos">
+
+                    </div>
+                </div>
+
+                <!-- aqui resumen del carrito -->
+                <div class="col-lg-4">
+                    <div class="card tarjeta-premium p-4 panel-carrito-fijo shadow-sm">
+                        <h3 class="fw-bold mb-3" style="color: var(--azul-principal);">
+                            <i class="bi bi-cart3 me-2"></i>Mi Carrito
+                        </h3>
+
+                        <div id="mensaje-temporal" class="alert alert-success d-none py-2" role="alert"></div>
+
+                        <!-- la lista de compra -->
+                        <div id="lista-carrito" class="my-3 overflow-auto" style="max-height: 250px;">
+                            <p class="text-muted italic text-center py-4">El carrito está vacío</p>
+                        </div>
+
+                        <hr>
+
+
+                        <button id="btn-calcular" class="btn btn-azul w-100 fw-bold py-2 mb-3"
+                            onclick="calcularTotales()" disabled>
+                            <i class="bi bi-calculator me-2"></i>Calcular Total
+                        </button>
+
+                        <!-- cuadro con los precios finales -->
+                        <div id="panel-totales" class="bg-light p-3 rounded mb-3 d-none">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Subtotal:</span>
+                                <span id="subtotal-valor" class="fw-semibold">-$0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">IVA (21%):</span>
+                                <span id="iva-valor" class="fw-semibold">-$0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between pt-2 border-top">
+                                <span class="fw-bold text-dark">Total:</span>
+                                <span id="total-valor" class="fw-bold fs-5 text-primary">-$0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- boton final para comprar -->
+                        <button id="btn-confirmar" class="btn btn-dorado w-100 fw-bold py-3" onclick="confirmarPedido()"
+                            disabled>
+                            <i class="bi bi-check-circle-fill me-2"></i>Confirmar Compra
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-primary text-white py-4 mt-auto">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2026 Dra. Gomez Lorena</p>
+        </div>
+    </footer>
+
+    <!-- bootstrap y scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/productos.js"></script>
+    <script>
+        // aqui guardamos lo que el usuario va agregando
+        let carrito = [];
+
+        // Elementos del html que vamos a usar
+        const contenedorProductos = document.getElementById("contenedor-productos");
+        const listaCarrito = document.getElementById("lista-carrito");
+        const btnCalcular = document.getElementById("btn-calcular");
+        const btnConfirmar = document.getElementById("btn-confirmar");
+        const panelTotales = document.getElementById("panel-totales");
+        const subtotalValor = document.getElementById("subtotal-valor");
+        const ivaValor = document.getElementById("iva-valor");
+        const totalValor = document.getElementById("total-valor");
+        const mensajeTemporal = document.getElementById("mensaje-temporal");
+
+        // función para mostrar los productos en pantalla
+        function renderizarCatalogo() {
+            contenedorProductos.innerHTML = "";
+
+            Object.keys(productos).forEach(id => {
+                const producto = productos[id];
+                const tarjeta = document.createElement("div");
+                tarjeta.className = "card tarjeta-producto mb-3";
+                tarjeta.innerHTML = `
+                    <div class="row g-0 align-items-center">
+                        <div class="col-md-4">
+                            <img src="${producto.imagen}" class="img-producto" alt="${producto.nombre}">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body p-4">
+                                <h4 class="card-title fw-bold text-dark mb-2">${producto.nombre}</h4>
+                                <p class="card-text text-muted mb-3">${producto.descripcion}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fs-4 fw-bold text-primary">$${producto.precio.toLocaleString('es-AR')}</span>
+                                    <button class="btn btn-azul px-4 py-2 fw-semibold" onclick="agregarAlCarrito(${id})">
+                                        <i class="bi bi-plus-lg me-1"></i>Añadir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                contenedorProductos.appendChild(tarjeta);
+            });
+        }
+
+        // funcion agregar al carrito
+        function agregarAlCarrito(id) {
+            const producto = productos[id];
+            if (!producto) return;
+
+            const elementoExistente = carrito.find(elemento => elemento.id === id);
+
+            if (elementoExistente) {
+                elementoExistente.cantidad += 1;
+            } else {
+                carrito.push({
+                    id: id,
+                    nombre: producto.nombre,
+                    precio: producto.precio,
+                    cantidad: 1
+                });
+            }
+
+            mostrarAlerta(`"${producto.nombre}" agregado al carrito ✅`);
+            actualizarCarritoDOM();
+            ocultarTotales();
+        }
+
+        // funcion para quitar un producto si el usuario se arrepiente
+        function quitarDelCarrito(id) {
+            carrito = carrito.filter(elemento => elemento.id !== id);
+            actualizarCarritoDOM();
+            ocultarTotales();
+            mostrarAlerta("Servicio removido del carrito ❌");
+        }
+
+        // funcion dibuja el carrito en el costado con su contenido
+        function actualizarCarritoDOM() {
+            listaCarrito.innerHTML = "";
+
+            if (carrito.length === 0) {
+                listaCarrito.innerHTML = `<p class="text-muted italic text-center py-4">El carrito está vacío</p>`;
+                btnCalcular.disabled = true;
+                btnConfirmar.disabled = true;
+                return;
+            }
+
+            carrito.forEach(elemento => {
+                const fila = document.createElement("div");
+                fila.className = "d-flex justify-content-between align-items-center lista-carrito-elemento";
+                fila.innerHTML = `
+                    <div>
+                        <span class="fw-semibold d-block text-dark text-truncate" style="max-width: 180px;">${elemento.nombre}</span>
+                        <small class="text-muted">Cant: ${elemento.cantidad} x $${elemento.precio.toLocaleString('es-AR')}</small>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="fw-bold text-primary">$${(elemento.precio * elemento.cantidad).toLocaleString('es-AR')}</span>
+                        <button class="btn btn-outline-danger btn-sm px-2 py-1" onclick="quitarDelCarrito(${elemento.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                `;
+                listaCarrito.appendChild(fila);
+            });
+
+            btnCalcular.disabled = false;
+            btnConfirmar.disabled = true;
+        }
+
+        // funcion de calculos
+        function calcularTotales() {
+            if (carrito.length === 0) return;
+
+            const subtotal = carrito.reduce((acumulador, elemento) => acumulador + (elemento.precio * elemento.cantidad), 0);
+            const iva = subtotal * IVA_PORCENTAJE;
+            const total = subtotal + iva;
+
+            subtotalValor.textContent = `$${subtotal.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            ivaValor.textContent = `$${iva.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            totalValor.textContent = `$${total.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+            panelTotales.classList.remove("d-none");
+            btnConfirmar.disabled = false;
+            mostrarAlerta("Totales calculados con éxito 🧮");
+        }
+
+        // funcion que esconde el panel de precios si agrega o quita elementos para que tengan que volver a calcular
+        function ocultarTotales() {
+            panelTotales.classList.add("d-none");
+            btnConfirmar.disabled = true;
+        }
+
+
+
+        // realiza el envio mediante FormSubmit en segundo plano
+        function enviarPedidoFormSubmit(datosComprador) {
+            const datosEnvio = new FormData();
+            datosEnvio.append("Nombre", datosComprador.nombre);
+            datosEnvio.append("Apellido", datosComprador.apellido);
+            datosEnvio.append("DNI", datosComprador.dni);
+            datosEnvio.append("Teléfono", datosComprador.telefono);
+
+            // Mapear cada elemento del carrito como campo individual para que FormSubmit los liste
+            carrito.forEach((elemento, indice) => {
+                datosEnvio.append(
+                    `Práctica ${indice + 1}`,
+                    `${elemento.nombre} (Cant: ${elemento.cantidad}) - Subtotal: $${(elemento.precio * elemento.cantidad).toLocaleString('es-AR')}`
+                );
+            });
+
+            const subtotal = carrito.reduce((acumulador, elemento) => acumulador + (elemento.precio * elemento.cantidad), 0);
+            const iva = subtotal * IVA_PORCENTAJE;
+            const total = subtotal + iva;
+
+            datosEnvio.append("Subtotal", `$${subtotal.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`);
+            datosEnvio.append("IVA (21%)", `$${iva.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`);
+            datosEnvio.append("Total General", `$${total.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`);
+
+            // Parámetros especiales de FormSubmit
+            datosEnvio.append("_subject", `Nueva Reserva de Prácticas - ${datosComprador.nombre} ${datosComprador.apellido}`);
+            datosEnvio.append("_captcha", "false");
+            datosEnvio.append("_template", "box");
+
+            return fetch("https://formsubmit.co/ajax/miguezexequiel@hotmail.com", {
+                method: "POST",
+                body: datosEnvio
+            })
+                .then(respuesta => {
+                    if (!respuesta.ok) throw new Error("Error en el envío");
+                    return respuesta.json();
+                });
+        }
+
+        // limpia todo, valida el formulario y dispara el envío del mail
+        function confirmarPedido() {
+            if (carrito.length === 0) return;
+
+            const formulario = document.getElementById("formulario-comprador");
+            if (!formulario.reportValidity()) {
+                mostrarAlerta("Completa los datos del comprador correctamente ⚠️");
+                return;
+            }
+
+            const datosComprador = {
+                nombre: document.getElementById("comprador-nombre").value.trim(),
+                apellido: document.getElementById("comprador-apellido").value.trim(),
+                dni: document.getElementById("comprador-dni").value.trim(),
+                telefono: document.getElementById("comprador-telefono").value.trim()
+            };
+
+            btnConfirmar.disabled = true;
+            btnConfirmar.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Enviando...`;
+
+            enviarPedidoFormSubmit(datosComprador)
+                .then(() => {
+                    carrito = [];
+                    actualizarCarritoDOM();
+                    ocultarTotales();
+                    formulario.reset();
+                    window.location.href = "gracias.html";
+                })
+                .catch(error => {
+                    console.error("Fallo al mandar mail:", error);
+                    mostrarAlerta("Fallo al enviar mail. Guardando de respaldo... ❌");
+
+                    const pedidoRespaldo = {
+                        comprador: datosComprador,
+                        items: carrito,
+                        fecha: new Date().toISOString()
+                    };
+                    localStorage.setItem("ultimo_pedido_fallido", JSON.stringify(pedidoRespaldo));
+
+                    btnConfirmar.disabled = false;
+                    btnConfirmar.innerHTML = `<i class="bi bi-check-circle-fill me-2"></i>Confirmar Compra`;
+                });
+        }
+
+        // cartel de mensaje 
+        function mostrarAlerta(mensaje) {
+            mensajeTemporal.textContent = mensaje;
+            mensajeTemporal.classList.remove("d-none");
+            clearTimeout(window.temporizadorAlerta);
+            window.temporizadorAlerta = setTimeout(() => {
+                mensajeTemporal.classList.add("d-none");
+            }, 3000);
+        }
+
+
+        renderizarCatalogo();
+    </script>
+</body>
+
+</html>
